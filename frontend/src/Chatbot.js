@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './styles.css';
 
@@ -14,11 +14,27 @@ const Chatbot = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
 
-    // ✅ Dynamic API URL
+    // Dynamic API URL
     const API_URL =
         window.location.hostname === 'localhost'
             ? 'http://localhost:5000'
             : 'https://ai-chat-p37k.onrender.com';
+
+    // Load Google Ads
+    useEffect(() => {
+
+        try {
+
+            if (window.adsbygoogle) {
+                window.adsbygoogle.push({});
+                window.adsbygoogle.push({});
+            }
+
+        } catch (err) {
+            console.log(err);
+        }
+
+    }, []);
 
     const sendMessage = async (e) => {
 
@@ -26,7 +42,7 @@ const Chatbot = () => {
 
         if (!input.trim()) return;
 
-        // User message
+        // User Message
         const userMessage = {
             text: input,
             sender: 'user'
@@ -39,7 +55,7 @@ const Chatbot = () => {
 
         try {
 
-            // ✅ Backend Request
+            // Backend API Request
             const response = await axios.post(
                 `${API_URL}/api/chat`,
                 {
@@ -47,7 +63,7 @@ const Chatbot = () => {
                 }
             );
 
-            // Bot reply
+            // Bot Reply
             const botMessage = {
                 text: response.data.reply,
                 sender: 'bot'
@@ -74,12 +90,34 @@ const Chatbot = () => {
     };
 
     return (
+
         <div className="chat-container">
+
+            {/* TOP BANNER GOOGLE AD */}
+
+            <div className="top-banner-ad">
+
+                <ins
+                    className="adsbygoogle"
+                    style={{
+                        display: 'block'
+                    }}
+                    data-ad-client="ca-pub-xxxxxxxxxxxx"
+                    data-ad-slot="1234567890"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"
+                ></ins>
+
+            </div>
+
+            {/* CHAT HEADER */}
 
             <div className="chat-header">
                 <h2>🤖 Gemini AI Chatbot</h2>
                 <p>Powered by Gemini 3.5 Flash</p>
             </div>
+
+            {/* MESSAGES */}
 
             <div className="chat-messages">
 
@@ -89,6 +127,7 @@ const Chatbot = () => {
                         key={index}
                         className={`message ${msg.sender}`}
                     >
+
                         <div className="message-content">
 
                             {msg.sender === 'bot' && (
@@ -102,21 +141,28 @@ const Chatbot = () => {
                             )}
 
                         </div>
+
                     </div>
 
                 ))}
 
+                {/* Loading */}
+
                 {loading && (
                     <div className="message bot">
+
                         <div className="typing-indicator">
                             <span>.</span>
                             <span>.</span>
                             <span>.</span>
                         </div>
+
                     </div>
                 )}
 
             </div>
+
+            {/* INPUT */}
 
             <form
                 onSubmit={sendMessage}
@@ -141,6 +187,23 @@ const Chatbot = () => {
                 </button>
 
             </form>
+
+            {/* BOTTOM STICKY GOOGLE AD */}
+
+            <div className="bottom-sticky-ad">
+
+                <ins
+                    className="adsbygoogle"
+                    style={{
+                        display: 'block'
+                    }}
+                    data-ad-client="ca-pub-xxxxxxxxxxxx"
+                    data-ad-slot="9876543210"
+                    data-ad-format="auto"
+                    data-full-width-responsive="true"
+                ></ins>
+
+            </div>
 
         </div>
     );
